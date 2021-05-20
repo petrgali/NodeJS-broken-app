@@ -1,5 +1,5 @@
 var router = require('express').Router();
-var Game = require('../models/game');
+var Game = require('../db').import('../models/game')
 
 router.get('/all', (req, res) => {
     Game.findAll({ where: { owner_id: req.user.id } })
@@ -97,20 +97,20 @@ router.delete('/remove/:id', (req, res) => {
             owner_id: req.user.id
         }
     })
-    .then(
-        function deleteSuccess(game) {
-            res.status(200).json({
-                game: game,
-                message: "Successfully deleted"
-            })
-        },
+        .then(
+            function deleteSuccess(game) {
+                res.status(200).json({
+                    game: game,
+                    message: "Successfully deleted"
+                })
+            },
 
-        function deleteFail(err) {
-            res.status(500).json({
-                error: err.message
-            })
-        }
-    )
+            function deleteFail(err) {
+                res.status(500).json({
+                    error: err.message
+                })
+            }
+        )
 })
 
 module.exports = router;
