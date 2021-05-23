@@ -24,7 +24,7 @@ router.post('/signin', async (req, res) => {
     try {
         const user = await User.findOne({ where: { username: req.body.user.username } });
         if (user) {
-            const matches = await bcrypt.compare(req.body.user.password, user.passwordHash)
+            const matches = await bcrypt.compare(req.body.user.password, user.passwordHash);
             if (matches) {
                 const token = jwt.sign({ id: user.id }, 'lets_play_sum_games_man', { expiresIn: 60 * 60 * 24 });
                 return res.status(http.OK).send({

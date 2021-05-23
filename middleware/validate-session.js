@@ -11,7 +11,7 @@ module.exports = async (req, res, next) => {
             auth: false,
             message: "No token provided."
         });
-        const decoded = jwt.verify(sessionToken, 'lets_play_sum_games_man')
+        const decoded = jwt.verify(sessionToken, 'lets_play_sum_games_man');
         if (decoded) {
             const user = await User.findOne({
                 where: {
@@ -25,6 +25,6 @@ module.exports = async (req, res, next) => {
             };
         };
     } catch (err) {
-        res.status(http.FORBIDDEN).send({ error: "not authorized" })
+        res.status(http.FORBIDDEN).send({ error: "not authorized" });
     };
 };

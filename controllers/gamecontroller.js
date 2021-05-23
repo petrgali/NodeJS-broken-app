@@ -1,6 +1,6 @@
 const router = require('express').Router();
-const Game = require('../db').import('../models/game')
-const http = require('../common/status.js')
+const Game = require('../db').import('../models/game');
+const http = require('../common/status.js');
 
 router.get('/all', async (req, res) => {
     try {
@@ -64,7 +64,7 @@ router.put('/update/:id', async (req, res) => {
             game: game,
             message: "Successfully updated"
         });
-        res.status(http.NOT_FOUND).send({ error: "Game not found" })
+        res.status(http.NOT_FOUND).send({ error: "Game not found" });
     } catch (err) {
         res.status(http.INTERNAL_ERROR).send({ error: err.message });
     };
@@ -82,9 +82,9 @@ router.delete('/remove/:id', async (req, res) => {
             game: game,
             message: "Successfully deleted"
         });
-        res.status(http.NOT_FOUND).send({ error: "Data not found" })
+        res.status(http.NOT_FOUND).send({ error: "Data not found" });
     } catch (err) {
-        res.status(http.INTERNAL_ERROR).send({ error: err.message })
+        res.status(http.INTERNAL_ERROR).send({ error: err.message });
     };
 });
 
