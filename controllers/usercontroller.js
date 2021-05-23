@@ -2,7 +2,7 @@ const router = require('express').Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../db').import('../models/user');
-const http = require('../common/status.js')
+const http = require('../common/status.js');
 
 router.post('/signup', async (req, res) => {
     try {
@@ -11,14 +11,14 @@ router.post('/signup', async (req, res) => {
             passwordHash: bcrypt.hashSync(req.body.user.password, 10),
         });
         const token = jwt.sign({ id: user.id }, 'lets_play_sum_games_man', { expiresIn: 60 * 60 * 24 });
-        res.status(http.OK).json({
+        res.status(http.OK).send({
             user: user,
             token: token
         });
     } catch (err) {
         res.status(http.INTERNAL_ERROR).send({ error: err.message });
-    }
-})
+    };
+});
 
 router.post('/signin', async (req, res) => {
     try {
@@ -27,7 +27,7 @@ router.post('/signin', async (req, res) => {
             const matches = await bcrypt.compare(req.body.user.password, user.passwordHash)
             if (matches) {
                 const token = jwt.sign({ id: user.id }, 'lets_play_sum_games_man', { expiresIn: 60 * 60 * 24 });
-                return res.status(http.OK).json({
+                return res.status(http.OK).send({
                     user: user,
                     message: "Successfully authenticated.",
                     sessionToken: token

@@ -4,26 +4,35 @@ const http = require('../common/status.js')
 
 router.get('/all', async (req, res) => {
     try {
-        const data = await Game.findAll({ where: { owner_id: req.user.id } });
+        const data = await Game.findAll({
+            where: {
+                owner_id: req.user.id
+            }
+        });
         if (data.length > 0) return res.status(http.OK).send({
             games: data,
             message: "Data fetched"
-        })
-        return res.status(http.NOT_FOUND).send({ error: "Data not found" })
+        });
+        return res.status(http.NOT_FOUND).send({ error: "Data not found" });
     } catch (err) {
-        res.status(http.INTERNAL_ERROR).send({ error: err.message })
-    }
-})
+        res.status(http.INTERNAL_ERROR).send({ error: err.message });
+    };
+});
 
 router.get('/:id', async (req, res) => {
     try {
-        const game = await Game.findOne({ where: { id: req.params.id, owner_id: req.user.id } })
-        if (game) return res.status(http.OK).send({ game: game })
-        return res.status(http.NOT_FOUND).send({ error: "Data not found" })
+        const game = await Game.findOne({
+            where: {
+                id: req.params.id,
+                owner_id: req.user.id
+            }
+        });
+        if (game) return res.status(http.OK).send({ game: game });
+        return res.status(http.NOT_FOUND).send({ error: "Data not found" });
     } catch (err) {
-        res.status(http.INTERNAL_ERROR).send({ error: err.message })
-    }
-})
+        res.status(http.INTERNAL_ERROR).send({ error: err.message });
+    };
+});
 
 router.post('/create', async (req, res) => {
     try {
@@ -38,11 +47,11 @@ router.post('/create', async (req, res) => {
     } catch (err) {
         res.status(http.INTERNAL_ERROR).send({ error: err.message });
     };
-})
+});
 
 router.put('/update/:id', async (req, res) => {
     try {
-        const game = awaitGame.update({
+        const game = await Game.update({
             ...req.body.game
         },
             {
@@ -50,15 +59,16 @@ router.put('/update/:id', async (req, res) => {
                     id: req.params.id,
                     owner_id: req.user.id
                 }
-            })
-        if (game) return res.status(http.OK).send({
+            });
+        if (game[0] !== 0) return res.status(http.OK).send({
             game: game,
             message: "Successfully updated"
-        })
+        });
+        res.status(http.NOT_FOUND).send({ error: "Game not found" })
     } catch (err) {
-        res.status(http.INTERNAL_ERROR).send({ error: err.message })
-    }
-})
+        res.status(http.INTERNAL_ERROR).send({ error: err.message });
+    };
+});
 
 router.delete('/remove/:id', async (req, res) => {
     try {

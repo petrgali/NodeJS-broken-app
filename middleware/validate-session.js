@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const User = require('../db').import('../models/user');
-const http = require('../common/status.js')
+const http = require('../common/status.js');
 
 module.exports = async (req, res, next) => {
     if (req.method == 'OPTIONS') return next();   // allowing options as a method for request
@@ -17,14 +17,14 @@ module.exports = async (req, res, next) => {
                 where: {
                     id: decoded.id
                 }
-            })
+            });
             if (user) {
                 req.user = user;
                 console.log(`user: ${user}`)
                 next()
-            }
-        }
+            };
+        };
     } catch (err) {
         res.status(http.FORBIDDEN).send({ error: "not authorized" })
-    }
-}
+    };
+};
